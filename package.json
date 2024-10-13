@@ -22,8 +22,10 @@
     "jest-serial-runner": "^1.1.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
+    "nodemon": "^3.1.7",
     "prettier": "1.18.2",
     "ts-jest": "^24.0.2",
+    "ts-node": "^10.9.2",
     "typescript": "^3.6.2"
   }
 }
