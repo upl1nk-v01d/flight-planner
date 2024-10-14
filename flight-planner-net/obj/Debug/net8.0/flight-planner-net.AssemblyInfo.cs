@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("flight-planner-net")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b72637ea5b16151816c000e7349888a40d8cb064")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+063cda7c2b8719de3004098abb28033ced970617")]
 [assembly: System.Reflection.AssemblyProductAttribute("flight-planner-net")]
 [assembly: System.Reflection.AssemblyTitleAttribute("flight-planner-net")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
