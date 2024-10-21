@@ -17,10 +17,42 @@ namespace flight_planner_net
             return NotFound();
         }
 
+        [Route("flights/{id}")]
+        [HttpDelete]
+        public IActionResult DeleteFlight(int id)
+        {
+            if(FlightStorage.DeleteFlight(id))
+            {
+                return Ok();
+            }
+
+            return NotFound();
+        }
+
         [HttpPost]
         [Route("flights")]
         public IActionResult AddFlight(Flight flight)
         {
+            if(FlightStorage.CheckDuplicates(flight))
+            {
+                return Conflict();
+            }
+
+            if(FlightStorage.CheckWrongValues(flight))
+            {
+                return BadRequest();
+            }
+
+            if(FlightStorage.CheckSameAirport(flight))
+            {
+                return BadRequest();
+            }
+
+            if(FlightStorage.CheckStrangeDates(flight))
+            {
+                return BadRequest();
+            }
+
             FlightStorage.AddFlight(flight);
 
             return Created("", flight);

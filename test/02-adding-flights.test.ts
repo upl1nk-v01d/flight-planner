@@ -14,13 +14,10 @@ describe("Adding Flights", () => {
     moment(baseDateTime).add(1, "day")
   );
 
-  console.log(request);
-
-
   it("should be able to add flights", async done => {
     const response = await AdminFlightApi.addFlight(request);
 
-    console.log(response);
+    //console.log(response.status);
 
     expect(response.status).toBe(201);
 
@@ -219,7 +216,6 @@ describe("Adding Flights", () => {
           await AdminFlightApi.addFlight(it);
           done.fail(`No error was thrown when adding ${JSON.stringify(it)}`);
         } catch (e) {
-          console.log(it)
           expect(e.response.status).toBe(400);
         }
       })
