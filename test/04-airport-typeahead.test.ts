@@ -48,11 +48,7 @@ describe("Airport Typeahead", () => {
             await AdminFlightApi.addFlight(flight3)
         ])
 
-        //console.log(CustomerFlightApi.searchAirports("RIX"))
-
         const responses = await Promise.all(phrases.map(it => CustomerFlightApi.searchAirports(it)))
-
-        //console.log(responses[0].data)
         
         responses.forEach(res => {
             console.log(res.status)

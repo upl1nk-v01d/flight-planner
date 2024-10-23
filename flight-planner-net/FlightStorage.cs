@@ -102,19 +102,28 @@ namespace flight_planner_net.Storage
          return false;
       }
 
-      public static Airport SearchAirports(string name)
+      public static List<Airport> SearchAirports(string search = "")
       {
-         Console.WriteLine(name);
-         foreach(var f in _flights)
-         if(f.From.Country.Contains(name)
-            || f.From.Country.Contains(name)
-            || f.From.Country.Contains(name)
-         )
+         var list = new List<Airport>();
+
+         search = search.Trim().ToLower();
+         
+         foreach(var f in _flights)  
          {
-            return f.From;
+            string coutry = f.From.Country.ToLower();
+            string city = f.From.City.ToLower();
+            string airport = f.From.AirportCode.ToLower();
+            
+            if(coutry.Contains(search)
+               || city.Contains(search)
+               || airport.Contains(search)
+            )
+            {
+               list.Add(f.From);
+            }
          }
 
-         return null;
+         return list;
       }
    }
 }

@@ -9,12 +9,13 @@ namespace flight_planner_net
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        [HttpGet]
         [Route("airports")]
-        public IActionResult SearchAirports(string? name)
+        [HttpGet("{search}")]
+        public IActionResult SearchAirports([FromQuery] string search = "")
         {
-            Console.WriteLine(name);
-            return Ok();
+            var list = FlightStorage.SearchAirports(search);
+
+            return Ok(list);
         }
     }
 }
