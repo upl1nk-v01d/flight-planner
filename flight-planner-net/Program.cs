@@ -1,4 +1,4 @@
-using flight_planner_net.Handlers;
+using FlightPlannerService.Handlers;
 using Microsoft.AspNetCore.Authentication;
 
 namespace flight_planner_net

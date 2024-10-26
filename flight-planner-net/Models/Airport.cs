@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace flight_planner_net.Models
+namespace FlightPlannerService.Models
 {
    public class Airport
    {

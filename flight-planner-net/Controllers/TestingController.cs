@@ -1,7 +1,7 @@
-using flight_planner_net.Storage;
+using FlightPlannerService.Storage;
 using Microsoft.AspNetCore.Mvc;
 
-namespace flight_planner_net
+namespace FlightPlannerService
 {
     [Route("testing-api")]
     [ApiController]

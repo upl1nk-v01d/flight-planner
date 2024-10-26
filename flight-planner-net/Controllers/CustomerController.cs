@@ -1,10 +1,8 @@
-using System.Text.Json.Serialization;
-using flight_planner_net.Models;
-using flight_planner_net.Storage;
-using Microsoft.AspNetCore.Authorization;
+using FlightPlannerService.Models;
+using FlightPlannerService.Storage;
 using Microsoft.AspNetCore.Mvc;
 
-namespace flight_planner_net
+namespace FlightPlannerService
 {
     [Route("api")]
     [ApiController]
@@ -23,8 +21,6 @@ namespace flight_planner_net
         [HttpPost("request")]
         public IActionResult SearchFlights(SearchFlightsRequest request)
         {
-            Console.WriteLine(request);
-
             if(FlightStorage.CheckRequestErrors(request))
             {
                 return BadRequest();

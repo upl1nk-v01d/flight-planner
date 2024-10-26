@@ -1,9 +1,9 @@
-using flight_planner_net.Models;
-using flight_planner_net.Storage;
+using FlightPlannerService.Models;
+using FlightPlannerService.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace flight_planner_net
+namespace FlightPlannerService
 {
     [Route("admin-api")]
     [ApiController]
@@ -29,8 +29,8 @@ namespace flight_planner_net
             return NotFound();
         }
 
-        [HttpPost]
         [Route("flights")]
+        [HttpPost]
         public IActionResult AddFlight(Flight flight)
         {
             if(FlightStorage.CheckDuplicates(flight))

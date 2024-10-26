@@ -1,11 +1,13 @@
-using flight_planner_net.Models;
+using FlightPlannerService.Models;
 
-namespace flight_planner_net.Storage
+namespace FlightPlannerService.Storage
 {
    public static class FlightStorage
    {
       private static List<Flight> _flights = new List<Flight>();
       private static int _id = 0;
+      public static SearchItems _searchItems = new SearchItems();
+
 
       public static Flight AddFlight(Flight flight)
       {
@@ -22,10 +24,17 @@ namespace flight_planner_net.Storage
 
       public static bool CheckDuplicates(Flight flight)
       {
-         if(_flights.Any(f => f.DepartureTime == flight.DepartureTime)
-            && _flights.Any(f => f.From.AirportCode == flight.From.AirportCode))
+         foreach(var f in _flights)
          {
-            return true;
+            if(
+               f.From.AirportCode == flight.From.AirportCode
+               && f.To.AirportCode == flight.To.AirportCode
+               && f.DepartureTime == flight.DepartureTime
+            )
+            {
+
+               return true;
+            }
          }
          
          return false;
@@ -43,23 +52,39 @@ namespace flight_planner_net.Storage
             {
                return true;
             }
-            else if(flight.From.Country == null || flight.From.City == null 
-               || flight.From.AirportCode == null)
+            else if
+            (
+               flight.From.Country == null 
+               || flight.From.City == null 
+               || flight.From.AirportCode == null
+            )
             {
                return true;
             }
-            else if(flight.To.Country == null || flight.To.City == null 
-               || flight.To.AirportCode == null)
+            else if
+            (
+               flight.To.Country == null 
+               || flight.To.City == null 
+               || flight.To.AirportCode == null
+            )
             {
                return true;
             }
-            else if(flight.From.Country == "" || flight.From.City == "" 
-               || flight.From.AirportCode == "")
+            else if
+            (
+               flight.From.Country == "" 
+               || flight.From.City == "" 
+               || flight.From.AirportCode == ""
+            )
             {
                return true;
             }
-            else if(flight.To.Country == "" || flight.To.City == "" 
-               || flight.To.AirportCode == "")
+            else if
+            (
+               flight.To.Country == "" 
+               || flight.To.City == "" 
+               || flight.To.AirportCode == ""
+            )
             {
                return true;
             }
@@ -93,7 +118,6 @@ namespace flight_planner_net.Storage
 
       public static bool DeleteFlight(int Id)
       {
-         Console.WriteLine(Id);
          if(Id > -1)
          {
             return true;
@@ -126,27 +150,17 @@ namespace flight_planner_net.Storage
          return list;
       }
 
-      public static object SearchFlights(SearchFlightsRequest search)
+      public static SearchItems SearchFlights(SearchFlightsRequest search)
       {
-         //if(_flights.Count() < 1)
-         //{
-         //   return null;
-         //}
-
-         //search = search.Trim().ToLower();
-
-         string[] _items = [];
-         int _pages = 0;
-         int _totalItems = 0;
-
-         object flights = new
+         foreach(var flight in _flights)
          {
-            items =_items,
-            page = _pages,
-            totalItems = _totalItems
-         };
-
-         return flights;
+            if(flight.From.AirportCode == search.From)
+            {
+               _searchItems.totalItems += 1;
+            }
+         }
+         
+         return _searchItems;
       }
 
       public static bool CheckRequestErrors(SearchFlightsRequest request)
