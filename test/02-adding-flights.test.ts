@@ -17,6 +17,8 @@ describe("Adding Flights", () => {
   it("should be able to add flights", async done => {
     const response = await AdminFlightApi.addFlight(request);
 
+    //console.log(response.status);
+
     expect(response.status).toBe(201);
 
     const flight = response.data;

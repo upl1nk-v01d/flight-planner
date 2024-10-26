@@ -1,0 +1,193 @@
+using FlightPlannerService.Models;
+
+namespace FlightPlannerService.Storage
+{
+   public static class FlightStorage
+   {
+      private static List<Flight> _flights = new List<Flight>();
+      private static int _id = 0;
+      public static SearchItems _searchItems = new SearchItems();
+
+
+      public static Flight AddFlight(Flight flight)
+      {
+         flight.Id = ++_id;
+         _flights.Add(flight);
+
+         return flight;
+      }
+
+      public static void ClearFlights()
+      {
+         _flights.Clear();
+      }
+
+      public static bool CheckDuplicates(Flight flight)
+      {
+         foreach(var f in _flights)
+         {
+            if(
+               f.From.AirportCode == flight.From.AirportCode
+               && f.To.AirportCode == flight.To.AirportCode
+               && f.DepartureTime == flight.DepartureTime
+            )
+            {
+
+               return true;
+            }
+         }
+         
+         return false;
+      }
+
+      public static bool CheckWrongValues(Flight flight)
+      {
+         foreach(var p in flight.GetType().GetProperties())
+         {
+            if(p.GetValue(flight) == null)
+            {
+               return true;
+            }
+            else if(flight.Carrier == "")
+            {
+               return true;
+            }
+            else if
+            (
+               flight.From.Country == null 
+               || flight.From.City == null 
+               || flight.From.AirportCode == null
+            )
+            {
+               return true;
+            }
+            else if
+            (
+               flight.To.Country == null 
+               || flight.To.City == null 
+               || flight.To.AirportCode == null
+            )
+            {
+               return true;
+            }
+            else if
+            (
+               flight.From.Country == "" 
+               || flight.From.City == "" 
+               || flight.From.AirportCode == ""
+            )
+            {
+               return true;
+            }
+            else if
+            (
+               flight.To.Country == "" 
+               || flight.To.City == "" 
+               || flight.To.AirportCode == ""
+            )
+            {
+               return true;
+            }
+         }
+         
+         return false;
+      }
+
+      public static bool CheckSameAirport(Flight flight)
+      {
+         if(flight.From.AirportCode.ToLower().Trim() == flight.To.AirportCode.ToLower().Trim())
+         {
+            return true;
+         }
+                
+         return false;
+      }
+
+      public static bool CheckStrangeDates(Flight flight)
+      {
+         var departure = DateTime.Parse(flight.DepartureTime);
+         var arrival = DateTime.Parse(flight.ArrivalTime);
+
+         if(arrival <= departure)
+         {
+            return true;
+         }         
+         
+         return false;
+      }
+
+      public static bool DeleteFlight(int Id)
+      {
+         if(Id > -1)
+         {
+            return true;
+         }
+
+         return false;
+      }
+
+      public static List<Airport> SearchAirports(string search = "")
+      {
+         var list = new List<Airport>();
+
+         search = search.Trim().ToLower();
+         
+         foreach(var f in _flights)  
+         {
+            string coutry = f.From.Country.ToLower();
+            string city = f.From.City.ToLower();
+            string airport = f.From.AirportCode.ToLower();
+            
+            if(coutry.Contains(search)
+               || city.Contains(search)
+               || airport.Contains(search)
+            )
+            {
+               list.Add(f.From);
+            }
+         }
+
+         return list;
+      }
+
+      public static SearchItems SearchFlights(SearchFlightsRequest search)
+      {
+         foreach(var flight in _flights)
+         {
+            if(flight.From.AirportCode == search.From)
+            {
+               _searchItems.totalItems += 1;
+            }
+         }
+         
+         return _searchItems;
+      }
+
+      public static bool CheckRequestErrors(SearchFlightsRequest request)
+      {
+         if(request.From == null)
+            return true;
+         if(request.To == null)
+            return true;
+         if(request.departureDate == null)
+            return true;
+         if(request.From == request.To)
+            return true;
+         
+         return false;
+      }
+
+      public static Flight FindFlightById(int id)
+      {
+         foreach(var f in _flights)
+         {
+            if(f.Id == id)
+            {
+               return f;
+            }
+         }
+
+         return null;
+      }
+   }
+}
