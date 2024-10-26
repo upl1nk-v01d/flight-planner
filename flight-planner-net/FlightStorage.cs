@@ -125,5 +125,55 @@ namespace flight_planner_net.Storage
 
          return list;
       }
+
+      public static object SearchFlights(SearchFlightsRequest search)
+      {
+         //if(_flights.Count() < 1)
+         //{
+         //   return null;
+         //}
+
+         //search = search.Trim().ToLower();
+
+         string[] _items = [];
+         int _pages = 0;
+         int _totalItems = 0;
+
+         object flights = new
+         {
+            items =_items,
+            page = _pages,
+            totalItems = _totalItems
+         };
+
+         return flights;
+      }
+
+      public static bool CheckRequestErrors(SearchFlightsRequest request)
+      {
+         if(request.From == null)
+            return true;
+         if(request.To == null)
+            return true;
+         if(request.departureDate == null)
+            return true;
+         if(request.From == request.To)
+            return true;
+         
+         return false;
+      }
+
+      public static Flight FindFlightById(int id)
+      {
+         foreach(var f in _flights)
+         {
+            if(f.Id == id)
+            {
+               return f;
+            }
+         }
+
+         return null;
+      }
    }
 }
