@@ -20,6 +20,13 @@ namespace FlightPlannerService
         [HttpGet]
         public IActionResult GetFlight(int id)
         {
+            var flight = _storage.FindFlightById(id);
+            
+            if(flight != null)
+            {
+                return Ok();
+            }
+
             return NotFound();
         }
 
@@ -27,7 +34,7 @@ namespace FlightPlannerService
         [HttpDelete]
         public IActionResult DeleteFlight(int id)
         {
-            if(FlightStorage.DeleteFlight(id))
+            if(_storage.DeleteFlight(id))
             {
                 return Ok();
             }

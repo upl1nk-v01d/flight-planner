@@ -121,14 +121,12 @@ namespace FlightPlannerService.Storage
             return false;
         }
 
-        public static bool DeleteFlight(int Id)
+        public bool DeleteFlight(int Id)
         {
-            if (Id > -1)
-            {
-                return true;
-            }
+            _context.Flights.Where(flight => flight.Id == Id).ExecuteDelete();
+            _context.SaveChanges();
 
-            return false;
+            return true;
         }
 
         public List<Airport> SearchAirports(string search = "")
