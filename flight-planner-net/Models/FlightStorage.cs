@@ -27,7 +27,7 @@ namespace FlightPlannerService.Storage
             _context.SaveChanges();
         }
 
-        public bool CheckDuplicates(Flight flight)
+        public bool FlightExists(Flight flight)
         {
             var _flights = _context.Flights
                 .Include(_flight => _flight.To)
@@ -45,7 +45,7 @@ namespace FlightPlannerService.Storage
             return false;
         }
 
-        public static bool CheckWrongValues(Flight flight)
+        public static bool IsValidFlight(Flight flight)
         {
             foreach (var p in flight.GetType().GetProperties())
             {
@@ -98,7 +98,7 @@ namespace FlightPlannerService.Storage
             return false;
         }
 
-        public static bool CheckSameAirport(Flight flight)
+        public static bool IsSameAirport(Flight flight)
         {
             if (flight.From.AirportCode.ToLower().Trim() == flight.To.AirportCode.ToLower().Trim())
             {
@@ -108,7 +108,7 @@ namespace FlightPlannerService.Storage
             return false;
         }
 
-        public static bool CheckStrangeDates(Flight flight)
+        public static bool HaveValidDates(Flight flight)
         {
             var departure = DateTime.Parse(flight.DepartureTime);
             var arrival = DateTime.Parse(flight.ArrivalTime);
@@ -169,7 +169,7 @@ namespace FlightPlannerService.Storage
             {
                 if (flight.From.AirportCode == search.From)
                 {
-                    items.totalItems += 1;
+                    items.TotalItems += 1;
                     return items;
                 }
             }
@@ -183,7 +183,7 @@ namespace FlightPlannerService.Storage
                 return true;
             if (request.To == null)
                 return true;
-            if (request.departureDate == null)
+            if (request.DepartureDate == null)
                 return true;
             if (request.From == request.To)
                 return true;

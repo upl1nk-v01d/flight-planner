@@ -15,7 +15,7 @@ namespace FlightPlannerService
         }
 
         [Route("airports")]
-        [HttpGet("{search}")]
+        [HttpGet]
         public IActionResult SearchAirports([FromQuery] string search = "")
         {
             var list = _storage.SearchAirports(search);

@@ -39,22 +39,22 @@ namespace FlightPlannerService
         [HttpPost]
         public IActionResult AddFlight(Flight flight)
         {
-            if (_storage.CheckDuplicates(flight))
+            if (_storage.FlightExists(flight))
             {
                 return Conflict();
             }
 
-            if(FlightStorage.CheckWrongValues(flight))
+            if(FlightStorage.IsValidFlight(flight))
             {
                 return BadRequest();
             }
 
-            if(FlightStorage.CheckSameAirport(flight))
+            if(FlightStorage.IsSameAirport(flight))
             {
                 return BadRequest();
             }
 
-            if(FlightStorage.CheckStrangeDates(flight))
+            if(FlightStorage.HaveValidDates(flight))
             {
                 return BadRequest();
             }

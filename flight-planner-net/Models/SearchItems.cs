@@ -2,15 +2,15 @@ namespace FlightPlannerService.Models
 {
     public class SearchItems
     {
-        public string[] items { get; set; }
-        public int page { get; set; }
-        public int totalItems { get; set; }
+        public string[] Items { get; set; }
+        public int Page { get; set; }
+        public int TotalItems { get; set; }
 
         public SearchItems()
         {
-            items = [];
-            page = 0;
-            totalItems = 0;
+            Items = [];
+            Page = 0;
+            TotalItems = 0;
         }
     }
 }
