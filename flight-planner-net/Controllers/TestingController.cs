@@ -19,8 +19,6 @@ namespace FlightPlannerService
 
         public IActionResult Clear()
         {
-            //FlightStorage.ClearFlights();
-
             _storage.ClearFlights();
             
             return Ok();

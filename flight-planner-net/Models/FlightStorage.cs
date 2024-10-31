@@ -29,11 +29,14 @@ namespace FlightPlannerService.Storage
 
         public bool CheckDuplicates(Flight flight)
         {
-            var _flights = _context.Flights.ToList();
+            var _flights = _context.Flights
+                .Include(_flight => _flight.To)
+                .Include(_flight => _flight.From)
+                .Where(_flight => _flight.From.City == flight.From.City);
 
             foreach (var _flight in _flights)
             {
-                if (_flight.DepartureTime == flight.DepartureTime)
+                if (_flight.ArrivalTime == flight.ArrivalTime)
                 {
                     return true;
                 }
@@ -134,7 +137,7 @@ namespace FlightPlannerService.Storage
 
             var list = new List<Airport>();
             var _airports = _context.Airports.ToList();
-
+            
             foreach (var _airport in _airports)
             {
                 string country = _airport.Country.ToLower();
@@ -150,20 +153,24 @@ namespace FlightPlannerService.Storage
                 }
             }
 
-
             return list;
         }
 
         public SearchItems SearchFlights(SearchFlightsRequest search)
         {
-            var _flights = _context.Flights.ToList();
             var items = new SearchItems();
+
+            var _flights = _context.Flights
+                .Include(flight => flight.To)
+                .Include(flight => flight.From)
+                .Where(flight => flight.From.AirportCode.Contains(search.From));
 
             foreach (var flight in _flights)
             {
                 if (flight.From.AirportCode == search.From)
                 {
                     items.totalItems += 1;
+                    return items;
                 }
             }
 

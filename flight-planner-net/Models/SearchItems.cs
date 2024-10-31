@@ -1,5 +1,3 @@
-using FlightPlannerService.Storage;
-
 namespace FlightPlannerService.Models
 {
     public class SearchItems

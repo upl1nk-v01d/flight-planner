@@ -1,4 +1,3 @@
-using FlightPlannerService.Database;
 using FlightPlannerService.Models;
 using FlightPlannerService.Storage;
 using Microsoft.AspNetCore.Authorization;
