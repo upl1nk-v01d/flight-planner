@@ -1,7 +1,10 @@
+using FlightPlannerService.Database;
 using FlightPlannerService.Handlers;
+using FlightPlannerService.Storage;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 
-namespace flight_planner_net
+namespace FlightPlannerService
 {
     public class Program
     {
@@ -16,6 +19,10 @@ namespace flight_planner_net
             builder.Services.AddCors(o => o.AddPolicy("MyPolicy", policy => {
                 policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
             }));
+
+            builder.Services.AddDbContext<FlightPlannerDbContext>(
+                options => options.UseSqlite(builder.Configuration.GetConnectionString("flight-planner")));
+            builder.Services.AddScoped<FlightStorage>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

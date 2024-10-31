@@ -10,10 +10,23 @@ namespace FlightPlannerService
     [Authorize]
     public class AdminController : ControllerBase
     {
+        private readonly FlightStorage _storage;
+        public AdminController(FlightStorage storage) 
+        { 
+            _storage = storage;
+        }
+
         [Route("flights/{id}")]
         [HttpGet]
         public IActionResult GetFlight(int id)
         {
+            var flight = _storage.FindFlightById(id);
+            
+            if(flight != null)
+            {
+                return Ok();
+            }
+
             return NotFound();
         }
 
@@ -21,7 +34,7 @@ namespace FlightPlannerService
         [HttpDelete]
         public IActionResult DeleteFlight(int id)
         {
-            if(FlightStorage.DeleteFlight(id))
+            if(_storage.DeleteFlight(id))
             {
                 return Ok();
             }
@@ -33,27 +46,27 @@ namespace FlightPlannerService
         [HttpPost]
         public IActionResult AddFlight(Flight flight)
         {
-            if(FlightStorage.CheckDuplicates(flight))
+            if (_storage.FlightExists(flight))
             {
                 return Conflict();
             }
 
-            if(FlightStorage.CheckWrongValues(flight))
+            if(FlightStorage.IsValidFlight(flight))
             {
                 return BadRequest();
             }
 
-            if(FlightStorage.CheckSameAirport(flight))
+            if(FlightStorage.IsSameAirport(flight))
             {
                 return BadRequest();
             }
 
-            if(FlightStorage.CheckStrangeDates(flight))
+            if(FlightStorage.HaveValidDates(flight))
             {
                 return BadRequest();
             }
 
-            FlightStorage.AddFlight(flight);
+            _storage.AddFlight(flight);
 
             return Created("", flight);
         }
