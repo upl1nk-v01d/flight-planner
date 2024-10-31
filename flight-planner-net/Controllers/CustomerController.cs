@@ -8,11 +8,17 @@ namespace FlightPlannerService
     [ApiController]
     public class CustomerController : ControllerBase
     {
+        private readonly FlightStorage _storage;
+        public CustomerController(FlightStorage storage)
+        {
+            _storage = storage;
+        }
+
         [Route("airports")]
         [HttpGet("{search}")]
         public IActionResult SearchAirports([FromQuery] string search = "")
         {
-            var list = FlightStorage.SearchAirports(search);
+            var list = _storage.SearchAirports(search);
 
             return Ok(list);
         }
@@ -26,7 +32,7 @@ namespace FlightPlannerService
                 return BadRequest();
             }
 
-            object flights = FlightStorage.SearchFlights(request);
+            object flights = _storage.SearchFlights(request);
 
             if(flights == null)
             {
@@ -40,16 +46,14 @@ namespace FlightPlannerService
         [HttpGet]
         public IActionResult FindFlightById(int id)
         {
-            var found = FlightStorage.FindFlightById(id);
+            var found = _storage.FindFlightById(id);
 
             if(found == null)
             {
-                return NotFound(0);
+                return NotFound();
             }
-            else
-            {
-                return Ok(found);
-            }
+            
+            return Ok(found);
         }
     }
 }

@@ -1,3 +1,4 @@
+using FlightPlannerService.Database;
 using FlightPlannerService.Models;
 using FlightPlannerService.Storage;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,12 @@ namespace FlightPlannerService
     [Authorize]
     public class AdminController : ControllerBase
     {
+        private readonly FlightStorage _storage;
+        public AdminController(FlightStorage storage) 
+        { 
+            _storage = storage;
+        }
+
         [Route("flights/{id}")]
         [HttpGet]
         public IActionResult GetFlight(int id)
@@ -33,7 +40,7 @@ namespace FlightPlannerService
         [HttpPost]
         public IActionResult AddFlight(Flight flight)
         {
-            if(FlightStorage.CheckDuplicates(flight))
+            if (_storage.CheckDuplicates(flight))
             {
                 return Conflict();
             }
@@ -53,7 +60,7 @@ namespace FlightPlannerService
                 return BadRequest();
             }
 
-            FlightStorage.AddFlight(flight);
+            _storage.AddFlight(flight);
 
             return Created("", flight);
         }
