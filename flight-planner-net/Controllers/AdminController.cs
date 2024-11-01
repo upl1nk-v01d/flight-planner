@@ -10,6 +10,8 @@ namespace FlightPlannerService
     [Authorize]
     public class AdminController : ControllerBase
     {
+        private static readonly object _locker = new object();
+
         [Route("flights/{id}")]
         [HttpGet]
         public IActionResult GetFlight(int id)
@@ -21,41 +23,40 @@ namespace FlightPlannerService
         [HttpDelete]
         public IActionResult DeleteFlight(int id)
         {
-            if(FlightStorage.DeleteFlight(id))
+            lock (_locker)
             {
-                return Ok();
-            }
+                if (FlightStorage.DeleteFlight(id))
+                {
+                    return Ok();
+                }
 
-            return NotFound();
+                return NotFound();
+            }
+            
         }
 
         [Route("flights")]
         [HttpPost]
         public IActionResult AddFlight(Flight flight)
         {
-            if(FlightStorage.CheckDuplicates(flight))
+            lock (_locker)
             {
-                return Conflict();
+                if (FlightStorage.CheckDuplicates(flight))
+                {
+                    return Conflict();
+                }
+
+                if (FlightStorage.CheckWrongValues(flight) || 
+                    FlightStorage.CheckSameAirport(flight) || 
+                    FlightStorage.CheckStrangeDates(flight))
+                {
+                    return BadRequest();
+                }
+
+                FlightStorage.AddFlight(flight);
+
+                return Created("", flight);
             }
-
-            if(FlightStorage.CheckWrongValues(flight))
-            {
-                return BadRequest();
-            }
-
-            if(FlightStorage.CheckSameAirport(flight))
-            {
-                return BadRequest();
-            }
-
-            if(FlightStorage.CheckStrangeDates(flight))
-            {
-                return BadRequest();
-            }
-
-            FlightStorage.AddFlight(flight);
-
-            return Created("", flight);
         }
     }
 }

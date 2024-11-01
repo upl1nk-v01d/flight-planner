@@ -6,7 +6,6 @@ namespace FlightPlannerService.Storage
    {
       private static List<Flight> _flights = new List<Flight>();
       private static int _id = 0;
-      public static SearchItems _searchItems = new SearchItems();
 
 
       public static Flight AddFlight(Flight flight)
@@ -30,6 +29,8 @@ namespace FlightPlannerService.Storage
                f.From.AirportCode == flight.From.AirportCode
                && f.To.AirportCode == flight.To.AirportCode
                && f.DepartureTime == flight.DepartureTime
+               && f.ArrivalTime == flight.ArrivalTime
+               && f.Carrier == flight.Carrier
             )
             {
 
@@ -40,57 +41,36 @@ namespace FlightPlannerService.Storage
          return false;
       }
 
-      public static bool CheckWrongValues(Flight flight)
+      public static bool CheckWrongValues(Flight? flight)
       {
-         foreach(var p in flight.GetType().GetProperties())
-         {
-            if(p.GetValue(flight) == null)
+            if(flight == null)
             {
                return true;
             }
-            else if(flight.Carrier == "")
+            else if(string.IsNullOrEmpty(flight.Carrier))
             {
                return true;
             }
             else if
             (
-               flight.From.Country == null 
-               || flight.From.City == null 
-               || flight.From.AirportCode == null
+               string.IsNullOrEmpty(flight.From.Country)
+               || string.IsNullOrEmpty(flight.From.City)
+               || string.IsNullOrEmpty(flight.From.AirportCode)
             )
             {
                return true;
             }
             else if
             (
-               flight.To.Country == null 
-               || flight.To.City == null 
-               || flight.To.AirportCode == null
+                string.IsNullOrEmpty(flight.To.Country)
+                || string.IsNullOrEmpty(flight.To.City)
+                || string.IsNullOrEmpty(flight.To.AirportCode)
             )
             {
                return true;
             }
-            else if
-            (
-               flight.From.Country == "" 
-               || flight.From.City == "" 
-               || flight.From.AirportCode == ""
-            )
-            {
-               return true;
-            }
-            else if
-            (
-               flight.To.Country == "" 
-               || flight.To.City == "" 
-               || flight.To.AirportCode == ""
-            )
-            {
-               return true;
-            }
-         }
          
-         return false;
+            return false;
       }
 
       public static bool CheckSameAirport(Flight flight)
@@ -152,15 +132,16 @@ namespace FlightPlannerService.Storage
 
       public static SearchItems SearchFlights(SearchFlightsRequest search)
       {
+          var list = new SearchItems();
          foreach(var flight in _flights)
          {
             if(flight.From.AirportCode == search.From)
             {
-               _searchItems.totalItems += 1;
+               list.totalItems += 1;
             }
          }
          
-         return _searchItems;
+         return list;
       }
 
       public static bool CheckRequestErrors(SearchFlightsRequest request)
