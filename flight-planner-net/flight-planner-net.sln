@@ -5,6 +5,12 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "flight-planner-net", "flight-planner-net.csproj", "{17A03093-ACBE-46B8-A3D4-A9C4E0CDCAB7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightPlanner.Core", "..\FlightPlannerCore\FlightPlanner.Core.csproj", "{4C45122D-424D-4EF6-B36E-C6621267820B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightPlanner.Data", "..\FlightPlanner.Data\FlightPlanner.Data.csproj", "{0838958C-0A3C-4C1D-8D16-8B9A776677D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightPlanner.Services", "..\FlightPlanner.Services\FlightPlanner.Services.csproj", "{8D768872-1A77-4114-9E48-4F5829699278}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{17A03093-ACBE-46B8-A3D4-A9C4E0CDCAB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17A03093-ACBE-46B8-A3D4-A9C4E0CDCAB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17A03093-ACBE-46B8-A3D4-A9C4E0CDCAB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C45122D-424D-4EF6-B36E-C6621267820B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C45122D-424D-4EF6-B36E-C6621267820B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C45122D-424D-4EF6-B36E-C6621267820B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C45122D-424D-4EF6-B36E-C6621267820B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0838958C-0A3C-4C1D-8D16-8B9A776677D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0838958C-0A3C-4C1D-8D16-8B9A776677D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0838958C-0A3C-4C1D-8D16-8B9A776677D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0838958C-0A3C-4C1D-8D16-8B9A776677D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D768872-1A77-4114-9E48-4F5829699278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D768872-1A77-4114-9E48-4F5829699278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D768872-1A77-4114-9E48-4F5829699278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D768872-1A77-4114-9E48-4F5829699278}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-﻿namespace FlightPlannerService.Models
+﻿namespace FlightPlanner.Core.Models
 {
     public class SearchFlightsRequest
     {

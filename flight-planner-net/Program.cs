@@ -1,6 +1,7 @@
-using FlightPlannerService.Database;
+using FlightPlanner.Core.Services;
+using FlightPlanner.Data;
+using FlightPlanner.Services;
 using FlightPlannerService.Handlers;
-using FlightPlannerService.Storage;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +23,9 @@ namespace FlightPlannerService
 
             builder.Services.AddDbContext<FlightPlannerDbContext>(
                 options => options.UseSqlite(builder.Configuration.GetConnectionString("flight-planner")));
-            builder.Services.AddScoped<FlightStorage>();
+            builder.Services.AddScoped<IDbService, DbService>();
+            builder.Services.AddScoped<IDBClearingService, DbClearingService>();
+            builder.Services.AddScoped(typeof(IEntityService<>), typeof(EntityService<>));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
