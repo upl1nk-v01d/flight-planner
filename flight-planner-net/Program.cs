@@ -1,3 +1,4 @@
+using flight_planner_net.Validations;
 using FlightPlanner.Core.Services;
 using FlightPlanner.Data;
 using FlightPlanner.Services;
@@ -23,9 +24,13 @@ namespace FlightPlannerService
 
             builder.Services.AddDbContext<FlightPlannerDbContext>(
                 options => options.UseSqlite(builder.Configuration.GetConnectionString("flight-planner")));
+            
             builder.Services.AddScoped<IDbService, DbService>();
             builder.Services.AddScoped<IDBClearingService, DbClearingService>();
             builder.Services.AddScoped(typeof(IEntityService<>), typeof(EntityService<>));
+            builder.Services.AddScoped<IFlightService, FlightService>();
+            builder.Services.AddScoped<IValidator, CarrierValidator>();
+            builder.Services.AddScoped<IValidator, FlightDatesValidator>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
