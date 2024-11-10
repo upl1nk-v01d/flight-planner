@@ -1,20 +1,25 @@
 using flight_planner_net.Models;
-using flight_planner_net.Validations;
 using FlightPlanner.Core.Models;
 using FlightPlanner.Core.Services;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+using IValidator = flight_planner_net.Validations.IValidator;
 
 namespace FlightPlannerService
 {
     [Route("admin-api")]
     [ApiController]
     [Authorize]
-    public class AdminController(IFlightService flightService) : ControllerBase
+    public class AdminController
+    (
+        IFlightService flightService,
+        IEnumerable<IValidator> validators    
+    ) : ControllerBase
     {
         private readonly IFlightService _flightService = flightService;
-        private readonly IEnumerable<IValidator> _validators;
+        private readonly IEnumerable<IValidator> _validators = validators;
+        private readonly IValidator<Flight> _validator;
         /*public AdminController(FlightStorage storage) 
         { 
             _storage = storage;
@@ -56,6 +61,13 @@ namespace FlightPlannerService
         public IActionResult AddFlight(FlightRequest request)
         {
             var flight = GetFromRequest(request);
+
+            var validationResult = _validator.Validate(flight);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest();
+            }
 
             if (!_validators.All(validator => validator.IsValid(flight)))
             {

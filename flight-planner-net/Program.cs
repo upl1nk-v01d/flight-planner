@@ -3,8 +3,11 @@ using FlightPlanner.Core.Services;
 using FlightPlanner.Data;
 using FlightPlanner.Services;
 using FlightPlannerService.Handlers;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using IValidator = flight_planner_net.Validations.IValidator;
 
 namespace FlightPlannerService
 {
@@ -31,6 +34,10 @@ namespace FlightPlannerService
             builder.Services.AddScoped<IFlightService, FlightService>();
             builder.Services.AddScoped<IValidator, CarrierValidator>();
             builder.Services.AddScoped<IValidator, FlightDatesValidator>();
+
+            var executingAssembly = Assembly.GetExecutingAssembly();
+            builder.Services.AddValidatorsFromAssembly(executingAssembly);
+            builder.Services.AddAutoMapper(executingAssembly);
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
