@@ -1,3 +1,4 @@
+using AutoMapper;
 using flight_planner_net.Models;
 using FlightPlanner.Core.Models;
 using FlightPlanner.Core.Services;
@@ -20,6 +21,7 @@ namespace FlightPlannerService
         private readonly IFlightService _flightService = flightService;
         private readonly IEnumerable<IValidator> _validators = validators;
         private readonly IValidator<Flight> _validator;
+        private readonly IMapper _mapper;
         /*public AdminController(FlightStorage storage) 
         { 
             _storage = storage;
@@ -37,7 +39,7 @@ namespace FlightPlannerService
                 return NotFound();
             }
 
-            var response = GetFromFlight(result);
+            var response = _mapper.Map<FlightResponse>(result);
 
             return Ok(result);
         }
@@ -60,7 +62,7 @@ namespace FlightPlannerService
         [HttpPost]
         public IActionResult AddFlight(FlightRequest request)
         {
-            var flight = GetFromRequest(request);
+            var flight = _mapper.Map<Flight>(request);
 
             var validationResult = _validator.Validate(flight);
 
@@ -75,7 +77,7 @@ namespace FlightPlannerService
             }
 
             var result = _flightService.Create(flight);
-            var response = GetFromFlight(flight);
+            var response = _mapper.Map<FlightResponse>(flight);
 
             response.Id = result.Entity.Id;
 
@@ -104,51 +106,6 @@ namespace FlightPlannerService
             //_storage.AddFlight(flight);
 
             return Created("", flight);
-        }
-
-        private Flight GetFromRequest(FlightRequest request)
-        {
-            return new Flight
-            {
-                ArrivalTime = request.ArrivalTime,
-                Carrier = request.Carrier,
-                DepartureTime = request.DepartureTime,
-                From = new Airport
-                {
-                    AirportCode = request.From.Airport,
-                    City = request.From.City,
-                    Country = request.From.Country,
-                },
-                To = new Airport
-                {
-                    AirportCode = request.To.Airport,
-                    City = request.To.City,
-                    Country = request.To.Country
-                }
-            };
-        }
-
-        private FlightResponse GetFromFlight(Flight flight)
-        {
-            return new FlightResponse
-            {
-                Id = flight.Id,
-                ArrivalTime = flight.ArrivalTime,
-                Carrier = flight.Carrier,
-                DepartureTime = flight.DepartureTime,
-                From = new AirportResponse
-                {
-                    Airport = flight.From.AirportCode,
-                    City = flight.From.City,
-                    Country = flight.From.Country,
-                },
-                To = new AirportResponse
-                {
-                    Airport = flight.To.AirportCode,
-                    City = flight.To.City,
-                    Country = flight.To.Country
-                }
-            };
-        }
+        }       
     }
 }

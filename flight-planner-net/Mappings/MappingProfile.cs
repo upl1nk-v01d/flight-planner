@@ -16,7 +16,8 @@ namespace flight_planner_net.Mappings
             (
                 airport => airport.AirportCode, 
                 options => options.MapFrom(request => request.Airport)
-            );
+            )
+            .ForMember(airport => airport.Id, options => options.Ignore());
 
             CreateMap<Airport, AirportResponse>()
             .ForMember
