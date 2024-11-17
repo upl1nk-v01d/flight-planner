@@ -1,0 +1,16 @@
+﻿namespace FlightPlanner.Core
+{
+    public class Result<T> where T : class
+    {
+        public T Response { get; set; }
+        public ResultStatus Status { get; set; }
+    }
+
+    public enum ResultStatus
+    {
+        Success = 0,
+        NotFound = 1,
+        BadRequest = 2,
+        Conflict = 3
+    }
+}
