@@ -15,23 +15,20 @@ namespace FlightPlannerService
     public class AdminController
     (
         IFlightService flightService,
-        IEnumerable<IValidator> validators    
+        IEnumerable<IValidator> validators,
+        IValidator<Flight> validator,
+        IMapper mapper
     ) : ControllerBase
     {
         private readonly IFlightService _flightService = flightService;
         private readonly IEnumerable<IValidator> _validators = validators;
-        private readonly IValidator<Flight> _validator;
-        private readonly IMapper _mapper;
-        /*public AdminController(FlightStorage storage) 
-        { 
-            _storage = storage;
-        }*/
+        private readonly IValidator<Flight> _validator = validator;
+        private readonly IMapper _mapper = mapper;
 
         [Route("flights/{id}")]
         [HttpGet]
         public IActionResult GetFlight(int id)
         {
-            //var flight = _storage.FindFlightById(id);
             var result = _flightService.GetFullFlightByID(id);
 
             if (result == null)
@@ -48,13 +45,7 @@ namespace FlightPlannerService
         [HttpDelete]
         public IActionResult DeleteFlight(int id)
         {
-            //var result = _flightService.Delete(id);
-            /*
-            if (result != null)
-            {
-                return Ok();
-            }
-            */
+           
             return NotFound();
         }
 
@@ -75,37 +66,19 @@ namespace FlightPlannerService
             {
                 return BadRequest();
             }
+            /*
+            if (!validationResult.IsUnique)
+            {
+                return Conflict();
+            }
+            */
 
             var result = _flightService.Create(flight);
             var response = _mapper.Map<FlightResponse>(flight);
 
             response.Id = result.Entity.Id;
 
-
-            /*
-            if (_storage.FlightExists(flight))
-            {
-                return Conflict();
-            }
-
-            if(FlightStorage.IsValidFlight(flight))
-            {
-                return BadRequest();
-            }
-
-            if(FlightStorage.IsSameAirport(flight))
-            {
-                return BadRequest();
-            }
-
-            if(FlightStorage.HaveValidDates(flight))
-            {
-                return BadRequest();
-            }
-            */
-            //_storage.AddFlight(flight);
-
-            return Created("", flight);
+            return Created("", response);
         }       
     }
 }

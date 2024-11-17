@@ -18,5 +18,12 @@ namespace flight_planner_net.Validations
 
             return arrivalTime > departureTime;
         }
+
+        public bool IsUnique(Flight? flight)
+        {
+
+
+            return false;
+        }
     }
 }
